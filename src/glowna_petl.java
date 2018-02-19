@@ -1,8 +1,12 @@
 import java.awt.BorderLayout;
 import java.awt.Canvas;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
+import javax.swing.text.html.HTMLDocument.HTMLReader.BlockAction;
 
 public class glowna_petl extends Canvas implements Runnable //Runnable clasa bedzie w¹tkiem
 {
@@ -50,9 +54,9 @@ public class glowna_petl extends Canvas implements Runnable //Runnable clasa bed
 	public void run()     // funkcja w ktrej jest petla g³ówna
 	{
 		while(Running)
-		{
-			render();
+		{			
 			update();
+			render();
 		}
 		stop();
 	}
@@ -64,6 +68,19 @@ public class glowna_petl extends Canvas implements Runnable //Runnable clasa bed
 	
 	private void render()
 	{
+		BufferStrategy bs  = getBufferStrategy();    //tworzyê strategie bufora i pobieram j¹ do nowo  utowrzoneogo obiektu
+		if(bs == null)    //warunek sprawdza czy bufor jest utworzony 
+		{
+			createBufferStrategy(3);//jezeli nie ma bufora tworzy, podana wartoœæ okresla ile buffer jest tworzone,  1 bedzie migotanie 2 dzia³¹ p³ynie ale m¹g¹ byc równiez migotania 
+		return;
+		}
+		Graphics g = bs.getDrawGraphics();     //class odpowiedzallna za rysowanie na naszym canvas
+		g.setColor(Color.black);
+		g.fillRect(0, 0, Width+10, Height+10);
+		g.dispose();//musimy zamknoæ obietk clasy graphics
+		bs.show();// wyswietlamy na rysowany element 
+		
+		
 //	System.out.println("test");
 	}
 	public static void main(String[] args) {
